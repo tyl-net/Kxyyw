@@ -1,0 +1,50 @@
+<%- include('partials/header') %>
+
+<div class="auth-wrap">
+  <div class="auth-card wide">
+    <h1>会员注册</h1>
+    <p class="auth-sub">加入我们，展示你的竞赛成果</p>
+    <% if (error) { %><div class="alert err"><%= error %></div><% } %>
+    <form method="post" action="/register">
+      <div class="field-row">
+        <div class="field">
+          <label>用户名 <span class="req">*</span></label>
+          <input type="text" name="username" value="<%= form.username || '' %>" placeholder="3-20 个字符" required>
+          <div class="hint">用于登录系统，长度 3-20 个字符</div>
+        </div>
+        <div class="field">
+          <label>姓名 <span class="req">*</span></label>
+          <input type="text" name="real_name" value="<%= form.real_name || '' %>" placeholder="请输入真实姓名" required>
+        </div>
+      </div>
+      <div class="field">
+        <label>学号 / 工号 <span class="req">*</span></label>
+        <input type="text" name="student_no" value="<%= form.student_no || '' %>" placeholder="登录时可使用学号/工号作为账号" required>
+      </div>
+      <div class="field">
+        <label>身份类型</label>
+        <div class="radio-row">
+          <label><input type="radio" name="identity" value="学生" <%= (form.identity || '学生') === '学生' ? 'checked' : '' %>><span>学生</span></label>
+          <label><input type="radio" name="identity" value="教师" <%= form.identity === '教师' ? 'checked' : '' %>><span>教师</span></label>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>密码 <span class="req">*</span></label>
+          <input type="password" name="password" placeholder="至少 8 个字符" required>
+          <div class="hint">至少 8 个字符，且包含两种及以上字符类型</div>
+        </div>
+        <div class="field">
+          <label>确认密码 <span class="req">*</span></label>
+          <input type="password" name="password2" placeholder="再次输入密码" required>
+        </div>
+      </div>
+      <button class="btn btn-block" type="submit">注 册</button>
+    </form>
+    <div class="divider">或</div>
+    <a class="btn-qq-block" href="/qq_login"><span class="qq-dot" style="background:#12b7f5;color:#fff">Q</span> 使用 QQ 快速注册</a>
+    <div class="auth-foot">已有账号？<a href="/login">立即登录</a>　|　<a href="/">返回首页</a></div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

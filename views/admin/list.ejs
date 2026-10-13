@@ -1,0 +1,52 @@
+<%- include('_head', { adminTitle: cfg.title + '管理', activeMenu: resKey }) %>
+
+<% if (query.ok) { %><div class="alert ok">操作成功。</div><% } %>
+
+<div class="panel">
+  <div class="admin-toolbar">
+    <form method="get" action="/admin/<%= resKey %>">
+      <input type="text" name="q" value="<%= q %>" placeholder="搜索...">
+      <button class="btn sm" type="submit">搜索</button>
+      <% if (q) { %><a class="btn sm ghost" href="/admin/<%= resKey %>">重置</a><% } %>
+    </form>
+    <% if (!cfg.noCreate) { %><a class="btn" href="/admin/<%= resKey %>/new">+ 新增<%= cfg.title %></a><% } %>
+  </div>
+
+  <div class="table-wrap">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <% cfg.list.forEach(function(k){ %><th><%= cfg.labels[k] || k %></th><% }); %>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (!rows.length) { %>
+          <tr><td colspan="<%= cfg.list.length + 1 %>" style="text-align:center;color:var(--text-sub);padding:34px">暂无数据</td></tr>
+        <% } %>
+        <% rows.forEach(function(row){ %>
+          <tr>
+            <% cfg.list.forEach(function(k){ %>
+              <td>
+                <% if (k === 'is_featured' || k === 'status') { %>
+                  <span class="pill <%= row[k] ? 'on' : 'off' %>"><%= row[k] ? '是/启用' : '否/禁用' %></span>
+                <% } else { %>
+                  <%= String(row[k] == null ? '—' : row[k]).slice(0, 60) %>
+                <% } %>
+              </td>
+            <% }); %>
+            <td class="actions">
+              <a class="btn sm ghost" href="/admin/<%= resKey %>/<%= row.id %>/edit">编辑</a>
+              <form method="post" action="/admin/<%= resKey %>/<%= row.id %>/delete" onsubmit="return confirm('确定删除该<%= cfg.title %>吗？此操作不可恢复。')" style="display:inline">
+                <button class="btn sm" style="background:#e55039" type="submit">删除</button>
+              </form>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+  <p style="margin-top:14px;color:var(--text-sub);font-size:13px">共 <%= rows.length %> 条记录</p>
+</div>
+
+<%- include('_foot') %>

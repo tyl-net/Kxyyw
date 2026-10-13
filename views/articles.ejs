@@ -1,0 +1,50 @@
+<%- include('partials/header') %>
+
+<section class="page-intro-section">
+  <div class="container">
+    <div class="page-intro">
+      <h1 class="page-intro-title">文章资讯</h1>
+      <p class="page-intro-desc">协会动态、学习心得与网站帮助</p>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+    <aside class="sidebar">
+      <h3>文章分类</h3>
+      <ul>
+        <li><a href="/articles" class="<%= !cat ? 'active' : '' %>"><span>全部文章</span><span class="cnt"><%= articles.length %></span></a></li>
+        <% cats.forEach(function(c){ %>
+          <li><a href="/articles?category_id=<%= encodeURIComponent(c.category) %>" class="<%= cat === c.category ? 'active' : '' %>">
+            <span><%= c.category %></span><span class="cnt"><%= c.cnt %></span>
+          </a></li>
+        <% }); %>
+      </ul>
+      <h3 style="margin-top:20px">热门标签</h3>
+      <p style="font-size:13px;color:var(--text-sub)">学习心得 · 竞赛经验 · 协会简介</p>
+    </aside>
+    <main class="main-content">
+      <div class="content-header"><h2><%= cat || '全部文章' %></h2><span class="result-count">共 <%= articles.length %> 篇</span></div>
+      <% if (!articles.length) { %>
+        <div class="empty"><div class="ico">📄</div><p>暂无文章。</p></div>
+      <% } else { %>
+        <div class="article-list">
+          <% articles.forEach(function(a){ %>
+            <a class="article-item" href="/article/<%= a.id %>">
+              <h3><%= a.title %></h3>
+              <div class="article-meta">
+                <span class="article-cat"><%= a.category %></span>
+                <span>作者：<%= a.author %></span>
+                <span><%= a.created_at %></span>
+                <span><%= a.view_count %> 次阅读</span>
+              </div>
+            </a>
+          <% }); %>
+        </div>
+      <% } %>
+    </main>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

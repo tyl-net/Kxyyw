@@ -1,0 +1,32 @@
+<%- include('partials/header') %>
+
+<section class="page-intro-section">
+  <div class="container">
+    <div class="page-intro">
+      <div class="breadcrumb" style="color:rgba(255,255,255,.8);padding:0 0 8px">
+        <a href="/" style="color:#fff">首页</a> / <a href="/galleries" style="color:#fff">赛事风采</a>
+      </div>
+      <h1 class="page-intro-title"><%= g.title %></h1>
+      <p class="page-intro-desc"><%= g.description %><%= g.event_date ? '（' + g.event_date + '）' : '' %></p>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="content-header" style="margin-top:24px">
+    <h2>现场照片</h2>
+    <span class="result-count">共 <%= images.length %> 张</span>
+  </div>
+  <div class="photo-grid">
+    <% images.forEach(function(im, i){ %>
+      <a href="<%= im.image_path %>" data-lightbox data-title="<%= esc(g.title) %>">
+        <img src="<%= im.image_path %>" alt="<%= esc(g.title) %> 第<%= i+1 %>张" loading="lazy">
+      </a>
+    <% }); %>
+  </div>
+  <div style="text-align:center;padding-bottom:20px">
+    <a class="btn ghost" href="/galleries">← 返回赛事风采</a>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

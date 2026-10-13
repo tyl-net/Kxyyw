@@ -1,0 +1,69 @@
+<%- include('partials/header') %>
+
+<div class="container">
+  <div class="breadcrumb"><a href="/">首页</a> / <a href="/competitions">赛事报名</a> / <%= c.title %></div>
+
+  <div class="detail-card">
+    <div class="detail-hero">
+      <img src="<%= c.cover %>" alt="<%= esc(c.title) %>">
+      <div class="body">
+        <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+          <span class="tag lv-other"><%= c.type === 'work' ? '作品类比赛' : '非作品类比赛' %></span>
+          <span class="tag <%= LEVEL_CLASS[c.competition_level] || 'lv-other' %>"><%= c.competition_level %></span>
+          <span class="tag lv-other"><%= (c.statusInfo || {}).label || '未知' %></span>
+        </div>
+        <h1><%= c.title %></h1>
+        <dl class="spec">
+          <dt>赛事类型</dt><dd><%= c.subtitle %></dd>
+          <dt>报名时间</dt><dd><%= c.reg_start || '待定' %> ~ <%= c.reg_end || '待定' %></dd>
+          <dt>团队规则</dt><dd><%= c.allow_team ? '允许团队报名，最多 ' + c.team_max + ' 人' : '仅限个人报名' %></dd>
+          <dt>当前状态</dt><dd><%= c.statusInfo.label %></dd>
+        </dl>
+        <div style="margin-top:24px">
+          <% if (myReg) { %>
+            <span class="btn ghost">已报名（<%= myReg.status === 1 ? '审核通过' : (myReg.status === 2 ? '审核未通过' : '待审核') %>）</span>
+          <% } else if (c.status === 2) { %>
+            <% if (member) { %>
+              <form method="post" action="/competition/<%= c.id %>/register" style="display:flex;gap:10px;flex-wrap:wrap">
+                <input type="text" name="team_name" placeholder="团队名称（个人参赛可留空）" style="border:1px solid var(--line);border-radius:8px;padding:9px 12px;outline:none">
+                <button class="btn" type="submit">立即报名</button>
+              </form>
+            <% } else { %>
+              <a class="btn" href="/login?redirect=/competition/<%= c.id %>">登录后报名</a>
+            <% } %>
+          <% } else { %>
+            <span class="btn ghost" style="cursor:default">当前不在报名期</span>
+          <% } %>
+        </div>
+        <% if (query.registered) { %><div class="alert ok" style="margin-top:16px">报名申请已提交，请等待审核。</div><% } %>
+      </div>
+    </div>
+
+    <div class="detail-section">
+      <h2>赛事统计</h2>
+      <div class="mini-stats">
+        <div class="mini-stat"><div class="v"><%= c.review_method %></div><div class="k">评审方式</div></div>
+        <div class="mini-stat"><div class="v"><%= applicants %></div><div class="k">报名人数</div></div>
+        <div class="mini-stat"><div class="v"><%= approved %></div><div class="k">审核通过</div></div>
+        <div class="mini-stat"><div class="v"><%= c.team_max %></div><div class="k">团队最大人数</div></div>
+      </div>
+    </div>
+
+    <div class="detail-section">
+      <h2>比赛介绍</h2>
+      <div class="rich"><%= c.content || '暂无比赛介绍。' %></div>
+    </div>
+
+    <div class="detail-section">
+      <h2>比赛规则</h2>
+      <ul class="rules-list">
+        <% (c.rules || '').split('；').filter(Boolean).forEach(function(r){ %><li><%= r %></li><% }); %>
+        <li>参赛作品必须原创，如发现抄袭取消参赛资格</li>
+        <li>比赛过程中如有问题，请联系赛事组委会</li>
+        <li>主办方保留对比赛规则的最终解释权</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,53 @@
+<footer class="footer">
+  <div class="container footer-grid">
+    <div class="footer-col">
+      <h3>关于我们</h3>
+      <p>本系统展示学校各类竞赛成果，包括国家级、省级、市级和校级等不同级别的获奖证书。</p>
+      <p class="footer-org"><%= SITE.org %></p>
+    </div>
+    <div class="footer-col">
+      <h3>快速链接</h3>
+      <a href="/">首页</a>
+      <a href="/certs">竞赛成果</a>
+      <a href="/plan">赛事规划</a>
+      <a href="/competitions">赛事报名</a>
+      <a href="/galleries">赛事风采</a>
+    </div>
+    <div class="footer-col">
+      <h3>更多</h3>
+      <a href="/works">作品展示</a>
+      <a href="/role-models">榜样力量</a>
+      <a href="/organization">协会组织</a>
+      <a href="/articles">文章资讯</a>
+      <a href="/admin/login">管理入口</a>
+    </div>
+    <div class="footer-col">
+      <h3>联系我们</h3>
+      <p>如有问题，请联系管理员。</p>
+      <p>邮箱：admin@youyue.info</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">
+      <span>© 2026 <%= SITE.subtitle %> - 版权所有</span>
+      <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener"><%= SITE.icp %></a>
+    </div>
+  </div>
+</footer>
+<div class="viewer" id="viewer">
+  <div class="viewer-top">
+    <span class="vt-title"></span>
+    <button class="viewer-close" aria-label="关闭">×</button>
+  </div>
+  <div class="viewer-body">
+    <div class="viewer-stage">
+      <img src="" alt="证书">
+      <button class="viewer-nav prev" aria-label="上一张">‹</button>
+      <button class="viewer-nav next" aria-label="下一张">›</button>
+    </div>
+    <aside class="viewer-info"></aside>
+  </div>
+</div>
+<script src="/assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<%- include('partials/header') %>
+
+<section class="page-intro-section">
+  <div class="container">
+    <div class="page-intro">
+      <h1 class="page-intro-title"><%= year %> 届协会组织架构</h1>
+      <p class="page-intro-desc">展示协会各部门设置及成员</p>
+    </div>
+  </div>
+</section>
+
+<div class="container" style="padding-top:26px">
+  <div class="plan-toolbar">
+    <div class="year-tabs">
+      <% years.forEach(function(y){ %>
+        <a class="year-tab <%= String(y) === String(year) ? 'active' : '' %>" href="/organization?year=<%= y %>"><%= y %>年</a>
+      <% }); %>
+    </div>
+    <a class="filter-btn" href="/article/1">查看协会简介 →</a>
+  </div>
+
+  <% if (!departments.length) { %>
+    <div class="empty"><div class="ico">🏛️</div><p>该年度组织架构尚未录入。</p></div>
+  <% } else { %>
+    <% departments.forEach(function(d){ %>
+      <div class="org-dept">
+        <div class="org-dept-head">
+          <h2><%= d.name %></h2>
+          <p><%= d.desc %></p>
+        </div>
+        <div class="members-grid">
+          <% d.members.forEach(function(m){ %>
+            <div class="member-card">
+              <div class="member-avatar"><img src="/img/avatar/<%= encodeURIComponent(m.name) %>.svg" alt="<%= esc(m.name) %>" loading="lazy"></div>
+              <div class="member-name"><%= m.name %></div>
+              <div class="member-position"><%= m.position %></div>
+            </div>
+          <% }); %>
+          <% if (!d.members.length) { %><p style="color:var(--text-sub);font-size:13.5px">暂无成员信息</p><% } %>
+        </div>
+      </div>
+    <% }); %>
+  <% } %>
+</div>
+
+<%- include('partials/footer') %>

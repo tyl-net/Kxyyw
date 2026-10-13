@@ -1,0 +1,27 @@
+<%- include('partials/header') %>
+
+<section class="page-intro-section">
+  <div class="container">
+    <div class="page-intro">
+      <h1 class="page-intro-title">榜样力量</h1>
+      <p class="page-intro-desc">他们用汗水浇灌梦想，用努力成就辉煌。让我们一起聆听他们的故事，感受榜样的力量。</p>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="role-grid">
+    <% roles.forEach(function(r){ %>
+      <a class="role-card" href="/role-model/<%= r.id %>">
+        <div class="role-avatar"><img src="<%= r.photo %>" alt="<%= esc(r.name) %>" loading="lazy"></div>
+        <div class="role-body">
+          <h3><%= r.name %></h3>
+          <div class="role-label">个人简介</div>
+          <p class="role-bio"><%= r.bio %></p>
+        </div>
+      </a>
+    <% }); %>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

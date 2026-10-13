@@ -1,0 +1,32 @@
+<%- include('partials/header') %>
+
+<div class="container">
+  <div class="breadcrumb"><a href="/">首页</a> / <a href="/role-models">榜样力量</a> / <%= r.name %></div>
+  <div class="role-detail">
+    <div class="photo"><img src="<%= r.photo %>" alt="<%= esc(r.name) %>"></div>
+    <div>
+      <h1><%= r.name %></h1>
+      <div class="role-section">
+        <h4>◆ 个人简介</h4>
+        <p><%= r.bio %></p>
+      </div>
+      <% if (r.honors) { %>
+        <div class="role-section">
+          <h4>◆ 所获荣誉</h4>
+          <ul class="rules-list">
+            <% r.honors.split('；').filter(Boolean).forEach(function(h){ %><li><%= h %></li><% }); %>
+          </ul>
+        </div>
+      <% } %>
+      <% if (r.message) { %>
+        <div class="role-section">
+          <h4>◆ 寄语</h4>
+          <div class="quote">“<%= r.message %>”</div>
+        </div>
+      <% } %>
+    </div>
+  </div>
+  <div style="text-align:center;padding-bottom:24px"><a class="btn ghost" href="/role-models">← 返回榜样力量</a></div>
+</div>
+
+<%- include('partials/footer') %>

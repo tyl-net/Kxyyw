@@ -1,0 +1,31 @@
+<%- include('partials/header') %>
+
+<div class="container">
+  <div class="breadcrumb"><a href="/">首页</a> / <a href="/works">作品展示</a> / <%= w.title %></div>
+
+  <div class="detail-card">
+    <div class="detail-hero">
+      <img src="<%= w.cover %>" alt="<%= esc(w.title) %>">
+      <div class="body">
+        <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+          <span class="tag lv-province"><%= w.category_name %></span>
+          <% if (w.is_featured) { %><span class="tag lv-global">精选作品</span><% } %>
+        </div>
+        <h1><%= w.title %></h1>
+        <dl class="spec">
+          <dt>作者</dt><dd><%= w.author %></dd>
+          <dt>所属院系</dt><dd><%= w.department %></dd>
+          <dt>创作年份</dt><dd><%= w.year %> 年</dd>
+          <dt>作品分类</dt><dd><%= w.category_name %></dd>
+        </dl>
+      </div>
+    </div>
+    <div class="detail-section">
+      <h2>作品说明</h2>
+      <div class="rich"><%= w.description || '暂无作品说明。' %></div>
+    </div>
+  </div>
+  <div style="text-align:center;padding-bottom:24px"><a class="btn ghost" href="/works">← 返回作品展示</a></div>
+</div>
+
+<%- include('partials/footer') %>

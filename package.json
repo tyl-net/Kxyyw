@@ -1,0 +1,19 @@
+{
+  "name": "youyue-system",
+  "version": "1.0.0",
+  "description": "科协优阅网 - 学科竞赛综合管理平台",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "seed": "node src/seed.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "cookie-parser": "^1.4.7"
+  }
+}

@@ -1,0 +1,9 @@
+# 统一换行符，避免不同系统下产生无意义的整体改动
+* text=auto eol=lf
+
+# 二进制文件不做转换
+*.png binary
+*.jpg binary
+*.webp binary
+*.ico binary
+*.db binary

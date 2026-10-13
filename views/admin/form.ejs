@@ -1,0 +1,43 @@
+<%- include('_head', { adminTitle: (mode === 'edit' ? '编辑' : '新增') + cfg.title, activeMenu: resKey }) %>
+
+<% if (typeof error !== 'undefined' && error) { %><div class="alert err">保存失败：<%= error %></div><% } %>
+
+<div class="panel">
+  <form method="post" action="/admin/<%= resKey %>/save">
+    <input type="hidden" name="__id" value="<%= row.id || '' %>">
+    <div class="form-grid">
+      <% cfg.fields.forEach(function(f){ %>
+        <div class="field <%= f.type === 'textarea' ? 'full' : '' %>">
+          <label><%= f.label %><% if (f.required) { %> <span class="req">*</span><% } %></label>
+
+          <% if (f.type === 'textarea') { %>
+            <textarea name="<%= f.name %>" rows="6"><%= row[f.name] || '' %></textarea>
+          <% } else if (f.type === 'select') { %>
+            <select name="<%= f.name %>">
+              <option value="">请选择</option>
+              <% f.options.forEach(function(o){ %>
+                <% var val = Array.isArray(o) ? o[0] : o; var lab = Array.isArray(o) ? o[1] : o; %>
+                <option value="<%= val %>" <%= String(row[f.name]) === String(val) ? 'selected' : '' %>><%= lab %></option>
+              <% }); %>
+            </select>
+          <% } else if (f.type === 'switch') { %>
+            <div class="switch">
+              <input type="checkbox" name="<%= f.name %>" value="1" <%= row[f.name] ? 'checked' : '' %>>
+              <span>勾选表示启用</span>
+            </div>
+          <% } else { %>
+            <input type="<%= f.type %>" name="<%= f.name %>" value="<%= row[f.name] != null ? row[f.name] : (f.def != null ? f.def : '') %>" <%= f.required ? 'required' : '' %>>
+          <% } %>
+
+          <% if (f.hint) { %><div class="hint"><%= f.hint %></div><% } %>
+        </div>
+      <% }); %>
+    </div>
+    <div style="margin-top:24px;display:flex;gap:12px">
+      <button class="btn" type="submit">保存</button>
+      <a class="btn ghost" href="/admin/<%= resKey %>">取消</a>
+    </div>
+  </form>
+</div>
+
+<%- include('_foot') %>

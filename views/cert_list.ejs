@@ -1,0 +1,94 @@
+<%- include('partials/header') %>
+
+<section class="page-intro-section">
+  <div class="container">
+    <div class="page-intro">
+      <h1 class="page-intro-title">竞赛成果</h1>
+      <p class="page-intro-desc">按学科分类、年份、级别等筛选查看竞赛成果</p>
+    </div>
+  </div>
+</section>
+
+<div class="filter-bar" data-page="cert_list">
+  <div class="container">
+    <div class="search-box">
+      <input type="text" id="search-input" placeholder="搜索竞赛名称、学生、教师..." value="<%= query.search || '' %>">
+      <button id="search-btn">搜索</button>
+    </div>
+    <div class="filter-group">
+      <select id="department-filter">
+        <option value="">全部院系</option>
+        <% DEPARTMENTS.forEach(function(d){ %><option value="<%= d %>" <%= query.department === d ? 'selected' : '' %>><%= d %></option><% }); %>
+      </select>
+      <select id="year-filter">
+        <option value="">全部年份</option>
+        <% years.forEach(function(y){ %><option value="<%= y %>" <%= query.year === y ? 'selected' : '' %>><%= y %>年</option><% }); %>
+      </select>
+      <select id="competition-level-filter">
+        <option value="">全部级别</option>
+        <% LEVELS.forEach(function(l){ %><option value="<%= l %>" <%= query.competition_level === l ? 'selected' : '' %>><%= l %></option><% }); %>
+      </select>
+      <select id="level-filter">
+        <option value="">全部等级</option>
+        <% AWARDS.forEach(function(a){ %><option value="<%= a %>" <%= query.level === a ? 'selected' : '' %>><%= a %></option><% }); %>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="layout">
+    <!-- 侧边分类 -->
+    <aside class="sidebar">
+      <h3>比赛项目</h3>
+      <ul>
+        <li><a href="/certs" class="<%= !query.category ? 'active' : '' %>"><span>全部</span><span class="cnt"><%= total %></span></a></li>
+        <% categories.forEach(function(c){ %>
+          <li><a href="/certs?category=<%= c.id %>" class="<%= String(query.category) === String(c.id) ? 'active' : '' %>">
+            <span><%= c.name %></span><span class="cnt"><%= c.cnt %></span>
+          </a></li>
+        <% }); %>
+      </ul>
+    </aside>
+
+    <!-- 主内容 -->
+    <main class="main-content">
+      <div class="content-header">
+        <h2><%= query.category ? (categories.find(function(c){return String(c.id)===String(query.category);}) || {}).name || '筛选结果' : '全部成果' %></h2>
+        <span class="result-count">共找到 <%= total %> 项成果</span>
+      </div>
+
+      <% if (!data.length) { %>
+        <div class="empty"><div class="ico">🔍</div><p>没有找到符合条件的成果，请尝试调整筛选条件。</p></div>
+      <% } else { %>
+        <div class="cert-grid" id="certGrid">
+          <% data.forEach(function(c){ %>
+            <div class="cert-card" data-id="<%= c.id %>">
+              <div class="card-image">
+                <img src="<%= c.image_thumb %>" alt="<%= esc(c.title) %>" loading="lazy">
+                <div class="card-overlay">
+                  <span class="competition-level-badge"><%= c.competition_level %></span>
+                  <span class="award-badge"><%= c.award_level %></span>
+                </div>
+              </div>
+              <div class="card-content">
+                <h3 class="card-title"><%= c.title %></h3>
+                <p class="card-meta">
+                  <span><%= c.category_name %></span>
+                  <span><%= c.competition_level %></span>
+                  <span><%= c.year %>年</span>
+                </p>
+                <p class="card-students"><%= c.students %></p>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+        <div class="load-more" <%= (page * limit >= total) ? 'style="display:none"' : '' %>>
+          <button class="btn" id="loadMoreBtn" data-page="<%= page %>" data-total="<%= total %>">加载更多</button>
+        </div>
+      <% } %>
+    </main>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,87 @@
+<%- include('partials/header') %>
+
+<section class="page-intro-section">
+  <div class="container">
+    <div class="page-intro">
+      <h1 class="page-intro-title"><%= year %> 年度赛事规划</h1>
+      <p class="page-intro-desc">提前了解赛事时间，合理安排备赛计划</p>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div style="padding:26px 0 4px">
+    <div class="plan-toolbar">
+      <div class="year-tabs">
+        <% (years.length ? years : [year]).forEach(function(y){ %>
+          <a class="year-tab <%= String(y) === String(year) ? 'active' : '' %>" href="/plan?year=<%= y %><%= level ? '&competition_level=' + encodeURIComponent(level) : '' %>"><%= y %>年</a>
+        <% }); %>
+      </div>
+      <div class="filter-tabs">
+        <a class="filter-btn <%= !level ? 'active' : '' %>" href="/plan?year=<%= year %>">全部级别</a>
+        <% LEVELS.forEach(function(l){ %>
+          <a class="filter-btn <%= level === l ? 'active' : '' %>" href="/plan?year=<%= year %>&competition_level=<%= encodeURIComponent(l) %>"><%= l %></a>
+        <% }); %>
+      </div>
+      <span class="result-count">共 <%= events.length %> 项赛事</span>
+    </div>
+  </div>
+
+  <div class="gantt">
+    <div class="gantt-head">
+      <div class="g-label">赛事名称 / 赛事时间轴</div>
+      <div class="g-months">
+        <% for (var m = 1; m <= 12; m++) { %><div class="gantt-month"><%= m %>月</div><% } %>
+      </div>
+    </div>
+    <% events.forEach(function(e){ %>
+      <div class="gantt-row">
+        <div class="g-name"><span class="dot"></span><span><%= e.event_name %></span></div>
+        <div class="gantt-track">
+          <div class="gantt-grid-bg"><% for (var m = 0; m < 12; m++) { %><i></i><% } %></div>
+          <% if (e.gantt) { %>
+            <% if (e.gantt.prepLeft !== null) { %>
+              <div class="gantt-bar prep" style="left:<%= e.gantt.prepLeft %>%;width:<%= e.gantt.prepWidth %>%" title="筹备期"></div>
+            <% } %>
+            <div class="gantt-bar" style="left:<%= e.gantt.left %>%;width:<%= e.gantt.width %>%" data-event="<%- esc(JSON.stringify(e)) %>" title="<%= e.event_name %>"></div>
+          <% } %>
+        </div>
+      </div>
+    <% }); %>
+    <div class="legend">
+      <span><i style="background:#ffd93d"></i>建议筹备期</span>
+      <span><i style="background:linear-gradient(135deg,#667eea,#764ba2)"></i>比赛进行期</span>
+      <span>点击时间条查看赛事详情</span>
+    </div>
+  </div>
+
+  <div class="event-cards">
+    <% events.forEach(function(e){ %>
+      <div class="event-card" data-event="<%- esc(JSON.stringify(e)) %>">
+        <div class="event-card-date">
+          <div class="m"><%= e.competition_start_date ? fmtMonth(e.competition_start_date) : (e.prep_start_date ? fmtMonth(e.prep_start_date) : '待定') %></div>
+          <div class="d"><%= e.competition_start_date ? fmtDay(e.competition_start_date) : '·' %></div>
+        </div>
+        <div class="event-card-body">
+          <h4><%= e.event_name %></h4>
+          <p>
+            <% if (e.competition_start_date) { %>
+              <%= fmtDate(e.competition_start_date) %><%= e.competition_end_date ? ' ~ ' + fmtDate(e.competition_end_date) : '' %>
+            <% } else { %>比赛时间待定<% } %>
+          </p>
+          <% if (e.prep_start_date) { %><span class="event-tag">筹备：<%= e.prep_start_date.slice(5).replace('-', '/') %> 起</span><% } %>
+        </div>
+      </div>
+    <% }); %>
+  </div>
+</div>
+
+<!-- 赛事详情弹窗 -->
+<div class="modal" id="planModal">
+  <div class="modal-box">
+    <div class="modal-head"><h3>赛事详情</h3><button class="modal-close">×</button></div>
+    <div class="modal-body"></div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

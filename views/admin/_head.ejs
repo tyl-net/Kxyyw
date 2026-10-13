@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title><%= adminTitle %> - 管理后台</title>
+<link rel="icon" href="/img/logo.svg">
+<link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body class="admin-body">
+<div class="admin-shell">
+  <aside class="admin-side">
+    <div class="brand"><strong><%= SITE.name %></strong><span>管理后台</span></div>
+    <nav>
+      <a href="/admin" class="<%= activeMenu === 'dashboard' ? 'active' : '' %>">📊 数据看板</a>
+      <a href="/admin/certs" class="<%= activeMenu === 'certs' ? 'active' : '' %>">🏆 竞赛成果</a>
+      <a href="/admin/plans" class="<%= activeMenu === 'plans' ? 'active' : '' %>">🗓 赛事规划</a>
+      <a href="/admin/competitions" class="<%= activeMenu === 'competitions' ? 'active' : '' %>">📋 赛事报名</a>
+      <a href="/admin/galleries" class="<%= activeMenu === 'galleries' ? 'active' : '' %>">🖼 赛事风采</a>
+      <a href="/admin/works" class="<%= activeMenu === 'works' ? 'active' : '' %>">📦 作品展示</a>
+      <a href="/admin/roles" class="<%= activeMenu === 'roles' ? 'active' : '' %>">⭐ 榜样力量</a>
+      <a href="/admin/org" class="<%= activeMenu === 'org' ? 'active' : '' %>">🏛 协会组织</a>
+      <a href="/admin/articles" class="<%= activeMenu === 'articles' ? 'active' : '' %>">📄 文章管理</a>
+      <a href="/admin/members" class="<%= activeMenu === 'members' ? 'active' : '' %>">👤 会员管理</a>
+    </nav>
+  </aside>
+  <div class="admin-main">
+    <div class="admin-top">
+      <h1><%= adminTitle %></h1>
+      <div class="right">
+        <a href="/" target="_blank">查看前台 ↗</a>
+        <span>管理员：<%= admin.username %></span>
+        <a href="/admin/logout" style="color:#e55039">退出</a>
+      </div>
+    </div>
+    <div class="admin-content">

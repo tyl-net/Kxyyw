@@ -1,0 +1,93 @@
+<%- include('partials/header') %>
+
+<div class="member-hero">
+  <div class="container">
+    <div class="avatar"><%= member.real_name.slice(0,1) %></div>
+    <div>
+      <h1><%= member.real_name %></h1>
+      <p><%= member.identity %> · 账号 <%= member.username %> · 学号/工号 <%= member.student_no %></p>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="stat-row">
+    <div class="stat-card"><div class="num"><%= certs.length %></div><div class="lbl">我的竞赛成果</div></div>
+    <div class="stat-card"><div class="num"><%= regs.length %></div><div class="lbl">我的赛事报名</div></div>
+    <div class="stat-card"><div class="num"><%= regs.filter(function(r){return r.status===1;}).length %></div><div class="lbl">审核通过</div></div>
+    <div class="stat-card"><div class="num"><%= member.created_at ? member.created_at.slice(0,10) : '-' %></div><div class="lbl">注册日期</div></div>
+  </div>
+
+  <% if (query.updated) { %><div class="alert ok">资料已更新。</div><% } %>
+
+  <div class="layout" style="padding-top:6px">
+    <main class="main-content">
+      <div class="content-header"><h2>我的竞赛成果</h2><span class="result-count">共 <%= certs.length %> 项</span></div>
+      <% if (!certs.length) { %>
+        <div class="empty"><div class="ico">🏆</div><p>系统中暂未匹配到与您姓名相关的获奖成果。</p></div>
+      <% } else { %>
+        <div class="cert-grid">
+          <% certs.forEach(function(c){ %>
+            <div class="cert-card" data-id="<%= c.id %>">
+              <div class="card-image">
+                <img src="<%= c.image_thumb %>" alt="<%= esc(c.title) %>" loading="lazy">
+                <div class="card-overlay">
+                  <span class="competition-level-badge"><%= c.competition_level %></span>
+                  <span class="award-badge"><%= c.award_level %></span>
+                </div>
+              </div>
+              <div class="card-content">
+                <h3 class="card-title"><%= c.title %></h3>
+                <p class="card-meta"><span><%= c.category_name %></span><span><%= c.year %>年</span></p>
+                <p class="card-students"><%= c.students %></p>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+      <% } %>
+
+      <div class="content-header" style="margin-top:30px"><h2>我的赛事报名</h2></div>
+      <% if (!regs.length) { %>
+        <div class="empty"><div class="ico">📝</div><p>您还没有报名任何赛事。<a href="/competitions" style="color:var(--primary)">去看看 →</a></p></div>
+      <% } else { %>
+        <div class="panel" style="box-shadow:var(--shadow)">
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead><tr><th>赛事名称</th><th>团队名称</th><th>报名时间</th><th>状态</th></tr></thead>
+              <tbody>
+                <% regs.forEach(function(r){ %>
+                  <tr>
+                    <td><a href="/competition/<%= r.competition_id %>" style="color:var(--primary)"><%= r.title %></a></td>
+                    <td><%= r.team_name || '—' %></td>
+                    <td><%= r.created_at %></td>
+                    <td><span class="pill <%= r.status===1?'on':(r.status===2?'off':'') %>"><%= r.status===1?'审核通过':(r.status===2?'审核未通过':'待审核') %></span></td>
+                  </tr>
+                <% }); %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      <% } %>
+    </main>
+
+    <aside class="sidebar">
+      <h3>个人资料</h3>
+      <form method="post" action="/member/profile">
+        <div class="field"><label>姓名</label><input type="text" name="real_name" value="<%= member.real_name %>"></div>
+        <div class="field">
+          <label>身份类型</label>
+          <select name="identity">
+            <option <%= member.identity === '学生' ? 'selected' : '' %>>学生</option>
+            <option <%= member.identity === '教师' ? 'selected' : '' %>>教师</option>
+          </select>
+        </div>
+        <div class="field"><label>用户名</label><input type="text" value="<%= member.username %>" disabled></div>
+        <div class="field"><label>学号/工号</label><input type="text" value="<%= member.student_no %>" disabled></div>
+        <button class="btn btn-block" type="submit">保存资料</button>
+      </form>
+      <p style="margin-top:14px"><a class="btn ghost btn-block" href="/logout">退出登录</a></p>
+    </aside>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

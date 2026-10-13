@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title><%= typeof pageTitle !== 'undefined' && pageTitle ? pageTitle + ' - ' : '' %><%= SITE.name %><%= page && page !== 'index' ? ' - ' + SITE.subtitle : '' %></title>
+<meta name="description" content="<%= SITE.subtitle %>，展示学院学科竞赛成果、赛事规划、赛事风采与优秀作品">
+<meta name="theme-color" content="#667eea">
+<link rel="icon" href="/img/logo.svg">
+<link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body data-page="<%= page %>">
+<header class="header">
+  <div class="container">
+    <div class="logo">
+      <a href="/">
+        <span class="logo-mark">阅</span>
+        <span class="logo-text">
+          <strong><%= SITE.name %></strong>
+          <em><%= SITE.subtitle %></em>
+        </span>
+      </a>
+    </div>
+    <nav class="nav">
+      <% NAV.forEach(function(item){ %>
+        <% if (item.children) { %>
+          <div class="nav-dropdown <%= item.key === page ? 'is-active' : '' %>">
+            <a href="<%= item.href %>" class="dropdown-trigger <%= item.key === page ? 'active' : '' %>">
+              <%= item.label %><span class="arrow">▾</span>
+            </a>
+            <div class="dropdown-menu">
+              <% item.children.forEach(function(ch){ %>
+                <a href="<%= ch.href %>" <%= ch.external ? 'target="_blank"' : '' %>><%= ch.label %></a>
+              <% }); %>
+            </div>
+          </div>
+        <% } else { %>
+          <a href="<%= item.href %>" class="<%= item.key === page ? 'active' : '' %>"><%= item.label %></a>
+        <% } %>
+      <% }); %>
+    </nav>
+    <div class="header-actions">
+      <% if (member) { %>
+        <div class="member-auth-dropdown">
+          <a href="/member" class="btn-login"><span class="mini-avatar"><%= member.real_name.slice(0,1) %></span><span><%= member.real_name %></span></a>
+          <div class="dropdown-menu">
+            <a href="/member">个人中心</a>
+            <a href="/logout">退出登录</a>
+          </div>
+        </div>
+      <% } else { %>
+        <div class="member-auth-dropdown">
+          <a href="/qq_login" class="btn-login btn-qq">
+            <span class="qq-dot">Q</span><span>QQ登录</span>
+          </a>
+          <div class="dropdown-menu">
+            <a href="/login">会员登录</a>
+            <a href="/register">注册</a>
+          </div>
+        </div>
+      <% } %>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="打开菜单"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+  <nav class="mobile-nav" id="mobileNav">
+    <div class="mobile-nav-head"><%= SITE.name %></div>
+    <% NAV.forEach(function(item){ %>
+      <% if (item.children) { %>
+        <div class="mobile-nav-group">
+          <a href="javascript:void(0)" class="mobile-nav-group-title"><%= item.label %><span>▾</span></a>
+          <div class="mobile-nav-submenu">
+            <% item.children.forEach(function(ch){ %><a href="<%= ch.href %>"><%= ch.label %></a><% }); %>
+          </div>
+        </div>
+      <% } else { %>
+        <a href="<%= item.href %>" class="<%= item.key === page ? 'active' : '' %>"><%= item.label %></a>
+      <% } %>
+    <% }); %>
+    <div class="mobile-nav-divider"></div>
+    <% if (member) { %>
+      <a href="/member">个人中心（<%= member.real_name %>）</a>
+      <a href="/logout">退出登录</a>
+    <% } else { %>
+      <a href="/login">会员登录</a>
+      <a href="/register">注册</a>
+    <% } %>
+  </nav>
+</header>

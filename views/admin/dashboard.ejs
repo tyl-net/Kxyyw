@@ -1,0 +1,69 @@
+<%- include('_head', { adminTitle: '数据看板', activeMenu: 'dashboard' }) %>
+
+<div class="admin-cards">
+  <div class="admin-card"><div class="num"><%= stats.certs %></div><div class="lbl">竞赛成果</div></div>
+  <div class="admin-card"><div class="num"><%= stats.events %></div><div class="lbl">赛事规划</div></div>
+  <div class="admin-card"><div class="num"><%= stats.comps %></div><div class="lbl">赛事报名</div></div>
+  <div class="admin-card"><div class="num"><%= stats.galleries %></div><div class="lbl">赛事风采图集</div></div>
+  <div class="admin-card"><div class="num"><%= stats.works %></div><div class="lbl">学生作品</div></div>
+  <div class="admin-card"><div class="num"><%= stats.roles %></div><div class="lbl">榜样人物</div></div>
+  <div class="admin-card"><div class="num"><%= stats.members %></div><div class="lbl">注册会员</div></div>
+  <div class="admin-card"><div class="num"><%= stats.regs %></div><div class="lbl">赛事报名记录</div></div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:22px">
+  <div class="panel">
+    <h2>竞赛分类分布（Top 8）</h2>
+    <div class="bar-chart">
+      <% var maxC = Math.max.apply(null, byCategory.map(function(x){return x.v;})) || 1; %>
+      <% byCategory.forEach(function(x){ %>
+        <div class="bar-item">
+          <span><%= x.k %></span>
+          <span class="bar-track"><span class="bar-fill" style="width:<%= (x.v/maxC*100).toFixed(1) %>%"></span></span>
+          <span class="val"><%= x.v %></span>
+        </div>
+      <% }); %>
+    </div>
+  </div>
+  <div class="panel">
+    <h2>比赛级别分布</h2>
+    <div class="bar-chart">
+      <% var maxL = Math.max.apply(null, byLevel.map(function(x){return x.v;})) || 1; %>
+      <% byLevel.forEach(function(x){ %>
+        <div class="bar-item">
+          <span><%= x.k %></span>
+          <span class="bar-track"><span class="bar-fill" style="width:<%= (x.v/maxL*100).toFixed(1) %>%"></span></span>
+          <span class="val"><%= x.v %></span>
+        </div>
+      <% }); %>
+    </div>
+  </div>
+  <div class="panel">
+    <h2>获奖年份分布</h2>
+    <div class="bar-chart">
+      <% var maxY = Math.max.apply(null, byYear.map(function(x){return x.v;})) || 1; %>
+      <% byYear.forEach(function(x){ %>
+        <div class="bar-item">
+          <span><%= x.k %> 年</span>
+          <span class="bar-track"><span class="bar-fill" style="width:<%= (x.v/maxY*100).toFixed(1) %>%"></span></span>
+          <span class="val"><%= x.v %></span>
+        </div>
+      <% }); %>
+    </div>
+  </div>
+  <div class="panel">
+    <h2>获奖等级分布</h2>
+    <div class="bar-chart">
+      <% var maxA = Math.max.apply(null, byAward.map(function(x){return x.v;})) || 1; %>
+      <% byAward.forEach(function(x){ %>
+        <div class="bar-item">
+          <span><%= x.k %></span>
+          <span class="bar-track"><span class="bar-fill" style="width:<%= (x.v/maxA*100).toFixed(1) %>%"></span></span>
+          <span class="val"><%= x.v %></span>
+        </div>
+      <% }); %>
+    </div>
+  </div>
+</div>
+
+<%- include('_foot') %>

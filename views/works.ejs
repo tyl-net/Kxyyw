@@ -1,0 +1,52 @@
+<%- include('partials/header') %>
+
+<section class="page-intro-section">
+  <div class="container">
+    <div class="page-intro">
+      <h1 class="page-intro-title">作品展示</h1>
+      <p class="page-intro-desc">记录作品精彩瞬间，展示学生创作风采，回顾每一次难忘的作品经历</p>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="layout">
+    <aside class="sidebar">
+      <h3>作品分类</h3>
+      <ul>
+        <li><a href="/works" class="<%= !query.category ? 'active' : '' %>"><span>全部</span><span class="cnt"><%= total %></span></a></li>
+        <% workCats.forEach(function(wc){ %>
+          <li><a href="/works?category=<%= encodeURIComponent(wc) %>" class="<%= query.category === wc ? 'active' : '' %>">
+            <span><%= wc %></span><span class="cnt"><%= counts[wc] %></span>
+          </a></li>
+        <% }); %>
+      </ul>
+    </aside>
+    <main class="main-content">
+      <div class="content-header">
+        <h2><%= query.category || '全部作品' %></h2>
+        <span class="result-count">共找到 <%= works.length %> 项作品</span>
+      </div>
+      <% if (!works.length) { %>
+        <div class="empty"><div class="ico">📦</div><p>暂无符合条件的作品。</p></div>
+      <% } else { %>
+        <div class="work-grid">
+          <% works.forEach(function(w){ %>
+            <a class="work-card" href="/work/<%= w.id %>">
+              <div class="work-cover">
+                <img src="<%= w.cover %>" alt="<%= esc(w.title) %>" loading="lazy">
+                <% if (w.is_featured) { %><span class="featured-badge">精选</span><% } %>
+              </div>
+              <div class="work-body">
+                <h3 class="work-title"><%= w.title %></h3>
+                <div class="work-meta"><span><%= w.category_name %></span><span><%= w.author %> · <%= w.year %></span></div>
+              </div>
+            </a>
+          <% }); %>
+        </div>
+      <% } %>
+    </main>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,19 @@
+# 依赖
+node_modules/
+
+# 运行时生成的数据库（首次启动自动重建）
+data/*.db
+data/*.db-journal
+
+# 日志与临时文件
+*.log
+npm-debug.log*
+.env
+.env.local
+
+# 编辑器 / 系统
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini

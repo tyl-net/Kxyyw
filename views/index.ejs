@@ -1,0 +1,116 @@
+<%- include('partials/header') %>
+
+<!-- 搜索筛选条 -->
+<div class="filter-bar" data-page="cert_list">
+  <div class="container">
+    <div class="search-box">
+      <input type="text" id="search-input" placeholder="搜索竞赛名称、学生、教师..." value="">
+      <button id="search-btn">搜索</button>
+    </div>
+    <div class="filter-group">
+      <select id="department-filter">
+        <option value="">全部院系</option>
+        <% DEPARTMENTS.forEach(function(d){ %><option value="<%= d %>"><%= d %></option><% }); %>
+      </select>
+      <select id="year-filter">
+        <option value="">全部年份</option>
+        <% years.forEach(function(y){ %><option value="<%= y %>"><%= y %>年</option><% }); %>
+      </select>
+      <select id="competition-level-filter">
+        <option value="">全部级别</option>
+        <% LEVELS.forEach(function(l){ %><option value="<%= l %>"><%= l %></option><% }); %>
+      </select>
+      <select id="level-filter">
+        <option value="">全部等级</option>
+        <% AWARDS.forEach(function(a){ %><option value="<%= a %>"><%= a %></option><% }); %>
+      </select>
+      <select id="category-filter">
+        <option value="">全部分类</option>
+        <% categories.forEach(function(c){ %><option value="<%= c.id %>"><%= c.name %></option><% }); %>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- 精选成果 -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="section-title">精选成果</h2>
+      <span class="section-sub">学院近年高水平竞赛获奖代表</span>
+    </div>
+    <div class="carousel" data-carousel>
+      <div class="carousel-track">
+        <% featured.forEach(function(c){ %>
+          <div class="carousel-slide">
+            <div class="slide-img"><img src="<%= c.image_detail %>" alt="<%= esc(c.title) %>" loading="lazy"></div>
+            <div class="slide-body">
+              <div class="slide-badges">
+                <span class="tag <%= LEVEL_CLASS[c.competition_level] || 'lv-other' %>"><%= c.competition_level %></span>
+                <span class="tag lv-national"><%= c.award_level %></span>
+              </div>
+              <h3 class="slide-title"><%= c.title %></h3>
+              <div class="slide-meta">
+                <span>竞赛分类：<%= c.category_name %></span>
+                <span>获奖年份：<%= c.year %></span>
+              </div>
+              <p class="slide-students">获奖学生：<%= c.students %></p>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+      <button class="carousel-btn prev" aria-label="上一张">‹</button>
+      <button class="carousel-btn next" aria-label="下一张">›</button>
+      <div class="carousel-dots"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 数据概览 -->
+<section class="section">
+  <div class="container">
+    <div class="stat-row">
+      <div class="stat-card"><div class="num"><%= stats.certs %></div><div class="lbl">竞赛获奖成果</div></div>
+      <div class="stat-card"><div class="num"><%= stats.comps %></div><div class="lbl">可报名赛事</div></div>
+      <div class="stat-card"><div class="num"><%= stats.galleries %></div><div class="lbl">赛事风采图集</div></div>
+      <div class="stat-card"><div class="num"><%= stats.works %></div><div class="lbl">学生优秀作品</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 全部成果 -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="section-title">全部成果</h2>
+      <span class="badge-count">共 <%= total %> 项成果</span>
+    </div>
+    <div class="cert-grid" id="certGrid">
+      <% latest.forEach(function(c){ %>
+        <div class="cert-card" data-id="<%= c.id %>">
+          <div class="card-image">
+            <img src="<%= c.image_thumb %>" alt="<%= esc(c.title) %>" loading="lazy">
+            <div class="card-overlay">
+              <span class="competition-level-badge"><%= c.competition_level %></span>
+              <span class="award-badge"><%= c.award_level %></span>
+            </div>
+          </div>
+          <div class="card-content">
+            <h3 class="card-title"><%= c.title %></h3>
+            <p class="card-meta">
+              <span><%= c.category_name %></span>
+              <span><%= c.competition_level %></span>
+              <span><%= c.year %>年</span>
+            </p>
+            <p class="card-students"><%= c.students %></p>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+    <div class="load-more">
+      <a class="btn" href="/certs">浏览全部成果 →</a>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
